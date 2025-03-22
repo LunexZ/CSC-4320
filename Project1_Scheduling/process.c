@@ -169,30 +169,35 @@ void print_results(Process processes[], int n, int gantt[][3], int gantt_size, c
 
 int main() {
     Process processes[MAX_PROCESSES]; // Array to hold all processes
-    int gantt[MAX_PROCESSES][3]; // Gantt chart: [PID, start time, end time]
-    int gantt_size; // Number of entries in the Gantt chart
+    int gantt[MAX_PROCESSES][3];      // Gantt chart: [PID, start time, end time]
+    int gantt_size;                   // Number of entries in the Gantt chart
 
-    char filename[100]; // To store the input filename
+    char filename[100];       // To store the user input filename (e.g., set1.txt)
+    char full_path[150];      // To hold "input/" + filename
 
     // Ask user for filename
-    printf("Enter the name of processes file (ex: sample1.txt): ");
-    scanf("%s", filename); // Read filename from user input
+    printf("Enter the name of the input file (e.g., set1.txt): ");
+    scanf("%s", filename);
 
-    // Step 1: Read the processes from file
-    int n = read_processes(filename, processes);
+    // Prepend folder path
+    snprintf(full_path, sizeof(full_path), "input/%s", filename);
+
+    // Step 1: Read the processes from the specified file in the input folder
+    int n = read_processes(full_path, processes);
     if (n == 0) return 1; // Exit if no processes were read
 
     // Step 2: FCFS Scheduling
     Process fcfs_copy[MAX_PROCESSES];
-    memcpy(fcfs_copy, processes, sizeof(Process) * n); // Copy processes for FCFS
+    memcpy(fcfs_copy, processes, sizeof(Process) * n);
     fcfs_scheduling(fcfs_copy, n, gantt, &gantt_size);
     print_results(fcfs_copy, n, gantt, gantt_size, "FCFS");
 
     // Step 3: SJF Scheduling
     Process sjf_copy[MAX_PROCESSES];
-    memcpy(sjf_copy, processes, sizeof(Process) * n); // Copy processes for SJF
+    memcpy(sjf_copy, processes, sizeof(Process) * n);
     sjf_scheduling(sjf_copy, n, gantt, &gantt_size);
     print_results(sjf_copy, n, gantt, gantt_size, "SJF");
 
     return 0;
 }
+
