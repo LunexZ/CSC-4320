@@ -180,7 +180,7 @@ int main() {
     scanf("%s", filename);
 
     // Prepend folder path
-    snprintf(full_path, sizeof(full_path), "input/%s", filename);
+    snprintf(full_path, sizeof(full_path), "./input/%s", filename);
 
     // Step 1: Read the processes from the specified file in the input folder
     int n = read_processes(full_path, processes);
